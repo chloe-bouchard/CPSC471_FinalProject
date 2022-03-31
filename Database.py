@@ -7,9 +7,9 @@ class Database:
         try:
             # Fill out the following fields before running!!!
             app.config["MYSQL_HOST"] = "localhost"
-            app.config["MYSQL_USER"] = "chad"
-            app.config["MYSQL_PASSWORD"] = "@@Kawa1000"
-            app.config["MYSQL_DB"] = "seng401"
+            app.config["MYSQL_USER"] = "root"
+            app.config["MYSQL_PASSWORD"] = "yourpassword"
+            app.config["MYSQL_DB"] = "cpsc471"
 
             mysql = MySQL(app)  # user this object for accessing database in multiple classes
             return mysql
