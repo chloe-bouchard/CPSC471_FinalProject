@@ -3,7 +3,91 @@ from flask import Flask, redirect, url_for, render_template, request, jsonify, f
 from App import app
 from Database import mysql
 
-HOST = "http://knowpros.pythonanywhere.com"
+HOST = "http://TheErythroSite.pythonanywhere.com"
+import os
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+from os import path
+from flask_login import LoginManager
+from flask_bcrypt import Bcrypt
+from flask_mail import Mail
+# from flask_debugtoolbar import DebugToolbarExtension
+
+
+
+db = SQLAlchemy()
+DB_NAME = "database.db"
+
+
+def create_app():
+    app = Flask(__name__)
+#     app.config.from_object(os.environ['APP_SETTINGS'])
+    app.config['SECRET_KEY'] = 'stranger_things_17'
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
+    app.config['SECURITY_PASSWORD_SALT'] = 'un_deux_trois'
+    db.init_app(app)
+
+    login_manager = LoginManager()
+    login_manager.init_app(app)
+    mail = Mail(app)
+
+    app.config['BCRYPT_LOG_ROUNDS'] = 13
+    app.config['WTF_CSRF_ENABLED'] = True
+    app.config['DEBUG_TB_ENABLED'] = False
+    app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
+
+
+        # mail settings
+    app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+    app.config['MAIL_PORT'] = 587
+    app.config['MAIL_USE_TLS'] = True
+    app.config['MAIL_USE_SSL'] = False
+
+        # gmail authentication
+    app.config['MAIL_USERNAME'] = 'TheErythroSite@gmail.com'
+    app.config['MAIL_PASSWORD'] = 'Cpsc471isfun!'
+
+        # mail accounts
+    app.config['MAIL_DEFAULT_SENDER'] = 'TheErythroSite@gmail.com'
+
+    from .views import views
+    from .auth import auth
+
+    app.register_blueprint(views, url_prefix='/')
+    app.register_blueprint(auth, url_prefix='/')
+
+
+    from .models import User, Note, Dashboard
+
+    create_database(app)
+
+    login_manager = LoginManager()
+    login_manager.login_view = 'auth.login'
+    login_manager.init_app(app)
+
+    @login_manager.user_loader
+    def load_user(id):
+        return User.query.get(int(id))
+
+    return app
+
+
+def create_database(app):
+    if not path.exists('website/' + DB_NAME):
+        db.create_all(app=app)
+        print('Created Database!')
+
+
+
+
+
+
+
+
+
+
+
+
 username = None
 professionFilter = None
 
@@ -31,255 +115,6 @@ def bookAppointment():
 @app.route('/blog', methods=['GET', 'POST'])
 def showBlog():
     return render_template("blog.html")
-# @app.route('/unregisteredMain', methods=["POST", "GET"])
-# def unregisteredMain():
-#     username = None
-#     global professionFilter
-#     if request.method == "POST":
-#         profFilter = request.form["inputProfession"]
-#         professionFilter = profFilter
-#         MySearch = Search()
-#         query = MySearch.getQuery()
-#
-#         return redirect("http://knowpros.pythonanywhere.com/query=" + query)
-#
-#     else:
-#         myPost = Posts()
-#         data = myPost.mostRecentQuestion()
-#
-#         return render_template("mainPage.html", data=data)
-#
-#
-# @app.route('/registeredMain/<username>', methods=["POST", "GET"])
-# def registeredMain(username):
-#     global professionFilter
-#     if request.method == "POST":
-#         profFilter = request.form["inputProfession"]
-#         professionFilter = profFilter
-#         MySearch = Search()
-#         query = MySearch.getQuery()
-#
-#         return redirect("http://knowpros.pythonanywhere.com/query=" + query)
-#
-#     else:
-#         myPost = Posts()
-#         question = myPost.mostRecentQuestionByUser(username)
-#         answer = myPost.mostRecentAnswerByUser(username)
-#
-#         return render_template("userHome.html", username=username, question=question, answer=answer)
-#
-#
-# @app.route("/query=<query>", methods=["GET", "POST"])
-# def search(query):
-#     global professionFilter
-#     if request.method == "GET":
-#         MySearch = Search()
-#         MyFilter = Filter()
-#         results = MySearch.searchResults(query)
-#         results = MyFilter.professionType(results, professionFilter)
-#         if results:
-#             return render_template("searchResults.html", data=results, username=username)
-#
-#         else:
-#             return render_template("searchResults.html", username=username, msg="No results...")
-#
-#     elif request.method == "POST":
-#         MySearch = Search()
-#         query = MySearch.getQuery()
-#
-#         return redirect("http://knowpros.pythonanywhere.com/query=" + query)
-#
-#
-#
-# @app.route("/addCompany/<username>", methods=["GET", "POST"])
-# def addCompany(username):
-#     if request.method == "POST" and request.form.get("basicSearch") == None:
-#         profile = Profile()
-#         profile.addCompany(username)
-#         flash("Company added successfully")
-#
-#         return render_template("addCompany.html", username = username)
-#
-#
-# #         return render_template("addCompany.html", username=username)
-#
-#     elif request.method == "GET":
-#         return render_template("addCompany.html", username = username)
-#
-# #         return render_template("addCompany.html", username=username)
-#
-#     elif request.method == "POST" and request.form.get("basicSearch") != None:
-#         MySearch = Search()
-#         query = MySearch.getQuery()
-#
-#         return redirect("../../query=" + query)
-#
-#
-# @app.route('/login', methods=["POST", "GET"])
-# def login():
-#     if request.method == "POST":
-#         global username
-#         username = request.form["username"]
-#         password = request.form["password"]
-#         myLogin = Login(username, password)
-#         # userExists = myLogin.authenticate()
-#         userExists = myLogin.validate()
-#
-#         if userExists:
-#             return redirect("./registeredMain/" + username)
-#         else:
-#             return render_template('loginPage.html', msg="INVALID LOGIN")
-#
-#     else:
-#         return render_template('loginPage.html')
-#
-#
-# @app.route('/signUp', methods=["POST", "GET"])
-# def signUp():
-#     if request.method == "POST":
-#         username = request.form["username"]
-#         password = request.form["password"]
-#         myLogin = Login(username, password)
-#         userExists = myLogin.user_exist()
-#
-#         if userExists:
-#             return render_template('signUp.html', data=username)
-#         else:
-#             myLogin.add_login()
-#             return redirect(url_for("createProfile", username=username))
-#
-#     else:
-#         return render_template('signUp.html')
-#
-#
-# @app.route('/createProfile/<username>', methods=["POST", "GET"])
-# def createProfile(username):
-#    # global data
-#
-#     if request.method == "POST":
-#         myProfile = Profile()
-#         myProfile.createProfile(username)
-#
-#         return redirect(url_for('registeredMain'))
-#
-#     else:
-#         return render_template('createProfile.html')
-#
-#
-# @app.route("/profile/view/<username>", methods=["GET", "POST"])
-# def viewProfile(username):
-#     if request.method == "GET":
-#         myProfile = Profile()
-#         data = myProfile.getData(username)
-#
-#         return render_template("viewProfile.html", data=data, username=username)
-#
-#     elif request.method == "POST":
-#         MySearch = Search()
-#         query = MySearch.getQuery()
-#
-#         return redirect("http://knowpros.pythonanywhere.com/query=" + query)
-#
-#     # Add post later (will be for "add past company")
-#
-#
-# @app.route("/profile/edit/<username>", methods=["GET", "POST"])
-# def editProfile(username):
-#     if request.method == "GET":
-#         myProfile = Profile()
-#         data = myProfile.getData(username)
-#
-#         return render_template("editProfile.html", data=data, username=username)
-#
-#     elif request.method == "POST" and request.form.get("basicSearch") == None:
-#         myProfile = Profile()
-#         myProfile.pushEdits(username)
-#
-#         return redirect("/view/" + username)
-#
-#     elif request.method == "POST" and request.form.get("basicSearch") != None:
-#         MySearch = Search()
-#         query = MySearch.getQuery()
-#
-#         return redirect("http://knowpros.pythonanywhere.com/query=" + query)
-#
-#
-# @app.route("/questions/<username>", methods=["GET", "POST"])
-# def questionHistory(username):
-#     if request.method == "GET":
-#         myPostHistory = PostHistory()
-#         data = myPostHistory.questionHistory(username)
-#
-#         if data:
-#             return render_template("questionHistory.html", data=data, username=username)
-#         else:
-#             return render_template("questionHistory.html", username=username, msg="No question history...")
-#
-#     elif request.method == "POST":
-#         MySearch = Search()
-#         query = MySearch.getQuery()
-#
-#         return redirect("http://knowpros.pythonanywhere.com/query=" + query)
-#
-#
-# @app.route("/answers/<username>", methods=["GET", "POST"])
-# def answerHistory(username):
-#     if request.method == "GET":
-#         myPostHistory = PostHistory()
-#         data = myPostHistory.answerHistory(username)
-#
-#         if data:
-#             return render_template("answerHistory.html", data=data, username=username)
-#         else:
-#             return render_template("answerHistory.html", username=username, msg="No answer history...")
-#
-#     elif request.method == "POST":
-#         MySearch = Search()
-#         query = MySearch.getQuery()
-#
-#         return redirect("http://knowpros.pythonanywhere.com/query=" + query)
-#
-#
-# @app.route("/post/question", methods=["GET", "POST"])
-# def newQuestion():
-#     if request.method == "GET":
-#         return render_template("questionPost.html", username=username)
-#
-#     elif request.method == "POST" and request.form.get("basicSearch") == None:
-#         myPost = Posts()
-#         qid = myPost.postQuestion(username)
-#
-#         return redirect("./view/" + qid)
-#
-#     elif request.method == "POST" and request.form.get("basicSearch") != None:
-#         MySearch = Search()
-#         query = MySearch.getQuery()
-#
-#         return redirect("http://knowpros.pythonanywhere.com/query=" + query)
-#
-#
-# @app.route("/post/view/<qid>", methods=["GET", "POST"])
-# def viewPost(qid):
-#     if request.method == "GET":
-#         myPost = Posts()
-#         question = myPost.viewPost(qid)[0]
-#         answers = myPost.viewPost(qid)[1]
-#
-#         return render_template("viewPost.html", question=question, answers=answers, username=username)
-#
-#     elif request.method == "POST" and request.form.get("basicSearch") == None:
-#         myPost = Posts()
-#         myPost.postAnswer(username, qid)
-#         question = myPost.viewPost(qid)[0]
-#         answers = myPost.viewPost(qid)[1]
-#
-#         return render_template("viewPost.html", question=question, answers=answers, username=username)
-#
-#     elif request.method == "POST" and request.form.get("basicSearch") != None:
-#         MySearch = Search()
-#         query = MySearch.getQuery()
-#
-#         return redirect("http://knowpros.pythonanywhere.com/query=" + query)
 
 
 # --------------------------------------------------------------------------------------------------------------------- #
