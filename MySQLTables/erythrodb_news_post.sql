@@ -18,33 +18,29 @@ USE `erythrodb`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `account`
+-- Table structure for table `news_post`
 --
 
-DROP TABLE IF EXISTS `account`;
+DROP TABLE IF EXISTS `news_post`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `account` (
-  `idaccount` int NOT NULL,
-  `First_Name` varchar(225) NOT NULL,
-  `Last_Name` varchar(225) NOT NULL,
-  `BirthDate` varchar(225) NOT NULL,
-  `Gender` varchar(45) NOT NULL,
-  `Password` varchar(225) NOT NULL,
-  `Age` int NOT NULL,
-  `Email_Address` varchar(225) NOT NULL,
-  PRIMARY KEY (`idaccount`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='Test';
+CREATE TABLE `news_post` (
+  `idnews_post` int NOT NULL,
+  `title` varchar(225) NOT NULL,
+  `body` varchar(500) NOT NULL,
+  `date` varchar(225) NOT NULL,
+  PRIMARY KEY (`idnews_post`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `account`
+-- Dumping data for table `news_post`
 --
 
-LOCK TABLES `account` WRITE;
-/*!40000 ALTER TABLE `account` DISABLE KEYS */;
-INSERT INTO `account` VALUES (1,'Aashik','Ilangovan','April 10 2001','Male','Password',20,'aashik@gmail.com'),(2,'John','Cena','June 25th 1988','Male','JohnCena',45,'johncena@yahoo.com');
-/*!40000 ALTER TABLE `account` ENABLE KEYS */;
+LOCK TABLES `news_post` WRITE;
+/*!40000 ALTER TABLE `news_post` DISABLE KEYS */;
+INSERT INTO `news_post` VALUES (1,'Fact 1','This is a blood fact','April 6th 2022'),(2,'Donations!','Come donate blood, everyone is welcome!','March 4th 2022');
+/*!40000 ALTER TABLE `news_post` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 

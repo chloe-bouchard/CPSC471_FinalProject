@@ -18,33 +18,32 @@ USE `erythrodb`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `account`
+-- Table structure for table `confirmation_email`
 --
 
-DROP TABLE IF EXISTS `account`;
+DROP TABLE IF EXISTS `confirmation_email`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `account` (
-  `idaccount` int NOT NULL,
-  `First_Name` varchar(225) NOT NULL,
-  `Last_Name` varchar(225) NOT NULL,
-  `BirthDate` varchar(225) NOT NULL,
-  `Gender` varchar(45) NOT NULL,
-  `Password` varchar(225) NOT NULL,
-  `Age` int NOT NULL,
-  `Email_Address` varchar(225) NOT NULL,
-  PRIMARY KEY (`idaccount`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='Test';
+CREATE TABLE `confirmation_email` (
+  `emailID` int NOT NULL,
+  `sender` varchar(45) NOT NULL,
+  `recipient` varchar(45) NOT NULL,
+  `subject` varchar(45) NOT NULL,
+  `message` varchar(450) NOT NULL,
+  `Donor` varchar(45) NOT NULL,
+  `AppointmentDate` varchar(400) NOT NULL,
+  PRIMARY KEY (`emailID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `account`
+-- Dumping data for table `confirmation_email`
 --
 
-LOCK TABLES `account` WRITE;
-/*!40000 ALTER TABLE `account` DISABLE KEYS */;
-INSERT INTO `account` VALUES (1,'Aashik','Ilangovan','April 10 2001','Male','Password',20,'aashik@gmail.com'),(2,'John','Cena','June 25th 1988','Male','JohnCena',45,'johncena@yahoo.com');
-/*!40000 ALTER TABLE `account` ENABLE KEYS */;
+LOCK TABLES `confirmation_email` WRITE;
+/*!40000 ALTER TABLE `confirmation_email` DISABLE KEYS */;
+INSERT INTO `confirmation_email` VALUES (1,'Erythro','Aashik','Donation','Hi Aashik, heres your confirmation for your donation','Aashik','May 8th 2022'),(2,'Erythro','Gibran','Donation','Hi Gibran, here is your confirmation for your donation','Gibran','May 22nd 2022');
+/*!40000 ALTER TABLE `confirmation_email` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -56,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-04-06 17:53:41
+-- Dump completed on 2022-04-06 17:53:40

@@ -18,33 +18,28 @@ USE `erythrodb`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `account`
+-- Table structure for table `location`
 --
 
-DROP TABLE IF EXISTS `account`;
+DROP TABLE IF EXISTS `location`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `account` (
-  `idaccount` int NOT NULL,
-  `First_Name` varchar(225) NOT NULL,
-  `Last_Name` varchar(225) NOT NULL,
-  `BirthDate` varchar(225) NOT NULL,
-  `Gender` varchar(45) NOT NULL,
-  `Password` varchar(225) NOT NULL,
-  `Age` int NOT NULL,
-  `Email_Address` varchar(225) NOT NULL,
-  PRIMARY KEY (`idaccount`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='Test';
+CREATE TABLE `location` (
+  `postalcode` varchar(225) NOT NULL,
+  `address` varchar(225) NOT NULL,
+  `city` varchar(225) NOT NULL,
+  PRIMARY KEY (`postalcode`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `account`
+-- Dumping data for table `location`
 --
 
-LOCK TABLES `account` WRITE;
-/*!40000 ALTER TABLE `account` DISABLE KEYS */;
-INSERT INTO `account` VALUES (1,'Aashik','Ilangovan','April 10 2001','Male','Password',20,'aashik@gmail.com'),(2,'John','Cena','June 25th 1988','Male','JohnCena',45,'johncena@yahoo.com');
-/*!40000 ALTER TABLE `account` ENABLE KEYS */;
+LOCK TABLES `location` WRITE;
+/*!40000 ALTER TABLE `location` DISABLE KEYS */;
+INSERT INTO `location` VALUES ('T4A 8XR','123 Real Address','Calgary'),('T5B 7YB','2500 University Drive','Calgary');
+/*!40000 ALTER TABLE `location` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 

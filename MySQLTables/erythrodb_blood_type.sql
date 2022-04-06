@@ -18,33 +18,28 @@ USE `erythrodb`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `account`
+-- Table structure for table `blood_type`
 --
 
-DROP TABLE IF EXISTS `account`;
+DROP TABLE IF EXISTS `blood_type`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `account` (
-  `idaccount` int NOT NULL,
-  `First_Name` varchar(225) NOT NULL,
-  `Last_Name` varchar(225) NOT NULL,
-  `BirthDate` varchar(225) NOT NULL,
-  `Gender` varchar(45) NOT NULL,
-  `Password` varchar(225) NOT NULL,
-  `Age` int NOT NULL,
-  `Email_Address` varchar(225) NOT NULL,
-  PRIMARY KEY (`idaccount`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='Test';
+CREATE TABLE `blood_type` (
+  `idblood_type` int NOT NULL,
+  `group` varchar(225) NOT NULL,
+  `rhesus_factor` varchar(245) NOT NULL,
+  PRIMARY KEY (`idblood_type`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `account`
+-- Dumping data for table `blood_type`
 --
 
-LOCK TABLES `account` WRITE;
-/*!40000 ALTER TABLE `account` DISABLE KEYS */;
-INSERT INTO `account` VALUES (1,'Aashik','Ilangovan','April 10 2001','Male','Password',20,'aashik@gmail.com'),(2,'John','Cena','June 25th 1988','Male','JohnCena',45,'johncena@yahoo.com');
-/*!40000 ALTER TABLE `account` ENABLE KEYS */;
+LOCK TABLES `blood_type` WRITE;
+/*!40000 ALTER TABLE `blood_type` DISABLE KEYS */;
+INSERT INTO `blood_type` VALUES (1,'B','Positive'),(2,'O','Negative'),(3,'A','Negative'),(4,'A','Positive'),(5,'O','Negative');
+/*!40000 ALTER TABLE `blood_type` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
