@@ -1,0 +1,130 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
+    %}
+    <html>
+    <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+    * {
+      box-sizing: border-box;
+    }
+    
+    
+    
+    
+    
+    /* Create two unequal columns that floats next to each other */
+    /* Left column */
+    .leftcolumn {   
+      float: left;
+      width: 100%;
+    }
+    
+    /* Right column */
+    .rightcolumn {
+      float: left;
+      width: 0%;
+      padding-left: 20px;
+    }
+    
+    
+    
+    /* Add a card effect for articles */
+    .card {
+       background-color: white;
+       padding: 20px;
+       margin-top: 20px;
+    }
+    
+    /* Clear floats after the columns */
+    .row:after {
+      content: "";
+      display: table;
+      clear: both;
+    }
+    
+    /* Footer */
+    .footer {
+      padding: 20px;
+      text-align: center;
+      background: #ddd;
+      margin-top: 20px;
+    }
+    
+    /* Responsive layout - when the screen is less than 800px wide, make the two columns stack on top of each other instead of next to each other */
+    @media screen and (max-width: 800px) {
+      .leftcolumn, .rightcolumn {   
+        width: 100%;
+        padding: 0;
+      }
+    }
+    </style>
+    </head>
+    <br/>
+        <fieldset>
+          <legend>Please fill out the following:</legend>
+          
+         <!--   <label for="fname"> First Name<span>*</span></label>
+            <input id="fname" type="text" name="fname" required/>
+        
+            <label for="lname"> Last Name<span>*</span></label>
+            <input id="lname" type="text" name="lname" required/>
+        
+            <label for="initial">Middle Initial</label>
+            <input id="initial" type="text" name="initial" required/> 
+          -->
+            <label for="phone">Phone Number<span>*</span></label>
+            <input id="phone" type="text"   name="phone" required/>
+		  
+        
+         <!-- <div class="item">
+            <label for="bdate">Birth Date <span>*</span></label>
+            <input id="bdate" type="date" name="bdate" required/>
+            <i class="fas fa-calendar-alt"></i>
+         </div>-->
+		  
+        <div class="question">
+		 <br>
+            <label>Is this your first blood donation?</label>
+             
+               <div>
+                <input type="radio" value="none" id="radio_1" name="visit"/>
+                <label for="radio_1" class="radio"><span>Yes</span></label>
+              </div>
+              <div>
+                <input  type="radio" value="none" id="radio_2" name="visit"/>
+                <label for="radio_2" class="radio"><span>No</span></label>
+              </div>
+           
+           </div>
+		   
+		<br/>
+          <legend>Appointment Options</legend>
+			<div class = "item">
+            <label for="date">Date<span>*</span></label>
+            <input id="date" type="date" name="date" required/>
+            <i class="fas fa-calendar-alt"></i>
+			</div>
+         
+            <p>Time</p>
+            <select>
+              <option selected value="" disabled selected></option>
+              <option value="m" >Morning</option>
+              <option value="a">Afternoon</option>
+              <option value="e">Evening</option>
+            </select>
+          
+          
+          
+        </fieldset>
+        <div class="btn-block">
+          <button type="submit" href="/">Submit</button><br>
+        </div>
+      </form>
+    </div>
+  </body>
+    
+    
+    </body>
+    </html>
+    
+    {% endblock %}
