@@ -65,33 +65,36 @@
 
 <div class="row">
   <div class="leftcolumn">
+    {% if (admin == '1' )%}
+    <form method = "POST">
+      <label for="title"><b>Title</b></label><br>
+      <input type="text" id="title" name="title" >
+      <br>
+      <label for="body"><b>Body</b></label><br>
+      <textarea id="blog_post" name="blog_post"  rows="4" cols="60" ></textarea>
+      <br>
+      <input class="btn btn-primary" type="submit" value="Submit">
+    </form>
+    {%endif%}
+
   
+    <!--for(number of blog posts, display)-->
+  {% for i in range(1, size) %}
   <div class="card">
-      <h2>BLOOD DONATION FACT #2</h2>
-      <p>Did you know? - March 6th 2021.</p>
-      <p> Healthy adults who are at least 17 years old, and at least 110 pounds may donate about a pint of blood—the most common form of donation—every 56 days, or every two months. Females receive 53 percent of blood transfusions; males receive 47 percent..</p>
+   
+      <h2>{{titles[size-i]}}</h2>
+      <p>{{dates[size-i]}}</p>
+      <p> {{bodies[size-i]}}</p>
+     
     </div>
-  
-    <div class="card">
-      <h2>HOW LONG DOES THE DONATION TAKE?</h2>
-      <p>What to expect - March 4th 2021.</p>
-      <p>The actual donation procedure is done by skilled, specially trained donor staff and takes 5 to 10 minutes. You will rest after donation, and enjoy refreshments. Plan to spend about an hour at the donor centre..</p>
-    </div>
-	
-    <div class="card">
-      <h2>BLOOD DONATION FACT #1</h2>
-      <p>Did you know? - Sep 2, 2021</p>
-      <p>Four main red blood cell types: A, B, AB and O. Each can be positive or negative for the Rh factor. AB is the universal recipient; O negative is the universal donor of red blood cells.</p>
-    </div>
+ {% endfor %}
   </div>
+  
   
   
    
   </div>
-</div>
 
-<div class="footer">
-</div>
 
 </body>
 </html>

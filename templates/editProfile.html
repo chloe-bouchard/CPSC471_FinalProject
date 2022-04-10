@@ -16,16 +16,24 @@
          
         <div class="container">
           <div class="card" style="width:400px">
+            {% if (gender == 'female') %}
+            <img class="card-img-top" src="/static/female.jpg" alt="Card image" style="width:100%">
+            {%else%}
+            <img class="card-img-top" src="/static/male.jpg" alt="Card image" style="width:100%">
+            {%endif%}
             <div class="card-body">
-              <h4 class="card-title"><b>Add Appointment</b></h4>
+              <h4 class="card-title">{{name}} {{lastname}}</h4>
               <br>
               <form method = "POST">
-                <label for="time"><b>Time:</b></label><br>
-                <input type="text" id="time" name="time" ><br><br>
-                <label for="date"><b>Date:</b></label><br>
-                <input type="text" id="date" name="date"><br><br>
-                <label for="location"><b>Location:</b></label><br>
-                <input type="text" id="location" name="location"><br><br>
+                <label for="fname"><b>First name:</b></label>
+                <input type="text" id="fname" name="fname" value={{name}}><br><br>
+                <label for="lname"><b>Last name:</b></label>
+                <input type="text" id="lname" name="lname" value={{lastname}}><br><br>
+                <label for="lname"><b>Password:</b></label>
+                <input type="text" id="password" name="password" value={{password}}><br><br>
+
+                <label for="date"><b>Birthdate:</b></label>
+                <input id="date" type="date" name="date" value = {{birthday}}><br><br>
 
                 <input class="btn btn-primary" type="submit" value="Submit">
               </form>
