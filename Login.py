@@ -2,6 +2,7 @@
 from App import app
 
 import mysql.connector
+from datetime import date
 
 class Login:
     #Ctor for Login
@@ -15,12 +16,9 @@ class Login:
     #function to execute an SQL Query
     #Returns the Query result
     def executeQuery(self,query):
-#         connection = mysql.connector.connect(host = "localhost", database = 'newdb', user = "root",passwd = "replace with your own password") #make sure to change password to correct one
-
         cursor = self.connection.cursor()
         cursor.execute(query)
         result = cursor.fetchall()
-        # cursor.commit()
         return result
 
 
@@ -43,7 +41,6 @@ class Login:
     def validate(self):
         query="SELECT * FROM Account WHERE Email='" + self.username + "' AND Password='" + self.password + "'"
         result=self.executeQuery(query)
-
         return result
 
 
@@ -82,11 +79,10 @@ class Login:
                 accountType = True
             else:
                 accountType = False
-            val = (name, lastname, birthday, gender, self.password, 10, self.username, accountType)
-            # userQuery = "INSERT INTO Account VALUES ('" + name + "','" + lastname + "','" + birthday+ "','" +  gender + "','" + self.password+  "','" +  age + "','" + self.username+ "');"
+            age = self.how_old(birthday)
+            val = (name, lastname, birthday, gender, self.password, age, self.username, accountType)
             cursor = self.connection.cursor()
             cursor.execute(userQuery, val)
-            # self.executeQuery(userQuery)
             print("added new user") #for debugging
             self.connection.commit()
             return True
@@ -94,10 +90,99 @@ class Login:
             print("this username already exists") #for debugging
             return False
 
-
+ 
     #Sets the password. Can be used if a user wants to change their password
     def set_password(self,password):
-        userQuery = "UPDATE Account SET Password = '"+password + "' WHERE Email_Address = '"+self.username +"';"
-        self.executeQuery(userQuery)
+        cursor = self.connection.cursor()
+        userQuery = "UPDATE Account SET Password = %s WHERE Email_Address = %s"
+        val = (password, self.username)
+        cursor.execute(userQuery, val)
+        self.connection.commit()
 
+    def set_lastname(self,lastname):
+        cursor = self.connection.cursor()
+        userQuery = "UPDATE Account SET Last_Name = %s WHERE Email_Address = %s"
+        val = (lastname, self.username)
+        cursor.execute(userQuery, val)
+        self.connection.commit()
+
+    def set_name(self,firstname):
+        cursor = self.connection.cursor()
+        userQuery = "UPDATE Account SET First_Name = %s WHERE Email_Address = %s"
+        val = (firstname, self.username)
+        cursor.execute(userQuery, val)
+        self.connection.commit()
+
+    def set_birthday(self,birthday):
+        cursor = self.connection.cursor()
+        userQuery = "UPDATE Account SET BirthDate = %s WHERE Email_Address = %s"
+        val = (birthday, self.username)
+        cursor.execute(userQuery, val)
+        self.connection.commit()
+
+    def set_age(self,age):
+        cursor = self.connection.cursor()
+        userQuery = "UPDATE Account SET age = %s WHERE Email_Address = %s"
+        val = (age, self.username)
+        cursor.execute(userQuery, val)
+        self.connection.commit()
+
+    def get_name(self, username):
+        userQuery = "SELECT First_Name FROM account WHERE Email_Address = '" + self.username + "';"
+        result = self.executeQuery(userQuery)
+        convert = str(result)
+        convert = convert[3:len(convert) - 4]
+        return convert
+
+    def get_last_name(self, username):
+        userQuery = "SELECT Last_Name FROM account WHERE Email_Address = '" + self.username + "';"
+        result = self.executeQuery(userQuery)
+        convert = str(result)
+        convert = convert[3:len(convert) - 4]
+        return convert
+
+    def get_birthday(self, username):
+        userQuery = "SELECT BirthDate FROM account WHERE Email_Address = '" + self.username + "';"
+        result = self.executeQuery(userQuery)
+        convert = str(result)
+        convert = convert[3:len(convert) - 4]
+        return convert
+
+    def get_gender(self, username):   
+        userQuery = "SELECT Gender FROM account WHERE Email_Address = '" + self.username + "';"
+        result = self.executeQuery(userQuery)
+        convert = str(result)
+        convert = convert[3:len(convert) - 4]
+        return convert
    
+    def get_password(self, username):   
+        userQuery = "SELECT Password FROM account WHERE Email_Address = '" + self.username + "';"
+        result = self.executeQuery(userQuery)
+        convert = str(result)
+        convert = convert[3:len(convert) - 4]
+        return convert
+
+    def get_age(self, username):   
+        userQuery = "SELECT Age FROM account WHERE Email_Address = '" + self.username + "';"
+        result = self.executeQuery(userQuery)
+        convert = str(result)
+        convert = convert[2:len(convert) - 3]
+        return convert
+
+    def how_old(self, birthday):
+        daysPerYear = 365.2425
+        age = int((date.today() - self.extractDate(birthday)).days/daysPerYear)
+        return age
+
+    def extractDate(self, birthday):
+        year = int(birthday[0:4])
+        month = int(birthday[5:7])
+        day = int(birthday[8:10]) 
+        print(year)
+        print(month)
+        print(day)
+        return date(year, month, day)
+
+    def update_age(self, birthday):
+        age = self.how_old(birthday)
+        self.set_age(age)
