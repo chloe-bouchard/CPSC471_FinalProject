@@ -14,31 +14,21 @@
         </head>
         
         <body>
-        
+        <center>
         <div class="container">
        
           <div class="card" style="width:400px">
-            {% if (gender == 'female') %}
-            <img class="card-img-top" src="/static/female.jpg" alt="Card image" style="width:100%">
-            {%else%}
-            <img class="card-img-top" src="/static/male.jpg" alt="Card image" style="width:100%">
-            {%endif%}
-            <div class="card-body">
-                <center>
-              <h4 class="card-title">{{name}} {{lastname}}</h4>
-            </center>
-                <p><br><b>Username:</b> {{username}}</p>
-                <p><b>Birthday:</b> {{birthday}}</p>
-                <p><b>Gender:</b> {{gender}}</p> 
-                <p><b>Age:</b> {{age}}</p> 
-                <p><b>Blood Type: </b>{{group}} {{rhesus}}</p>
-                             <a href="/edit-profile/{{admin}}/{{username}}" class="btn btn-primary">Edit Profile</a>
-            </div>
+            <img class="card-img-top" src="/static/confirmed.jpg" alt="Card image" style="width:100%">
+            <p><br>Thanks for booking with us. You will receive an email confirming the appointment details</p>
+                <br>
+                <a class = "button" href="/logged-in/{{admin}}/{{username}}"><span>Go back to homepage</span></a> 
+                <br>   
           </div>
           <br>
           
          
         </div>
+    </center>
     
         </body>
         </html>

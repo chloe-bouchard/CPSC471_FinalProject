@@ -16,29 +16,30 @@
         <body>
         
         <div class="container">
-       
-          <div class="card" style="width:400px">
-            {% if (gender == 'female') %}
-            <img class="card-img-top" src="/static/female.jpg" alt="Card image" style="width:100%">
-            {%else%}
-            <img class="card-img-top" src="/static/male.jpg" alt="Card image" style="width:100%">
-            {%endif%}
-            <div class="card-body">
-                <center>
-              <h4 class="card-title">{{name}} {{lastname}}</h4>
+          <br>
+          <center>
+          <div class="card" style="width:600px">
+            <form method = "POST">
+              <br>
+              <h4 class="card-title">Send Message</h4><br>
+              <label for="title"><b><pre>Title</pre></b></label>
+             <center> <input type="text" id="title" name="title"  style="width:90%"></center>
+              <br>
+              <label for="body"><b><pre>Body</pre></b></label><br>
+              <center> <textarea id="blog_post" name="blog_post"  rows="4" style="width:90%" ></textarea></center>
+              <br>
+              <center>
+              <input class="btn btn-primary" type="submit" value="Submit">
             </center>
-                <p><br><b>Username:</b> {{username}}</p>
-                <p><b>Birthday:</b> {{birthday}}</p>
-                <p><b>Gender:</b> {{gender}}</p> 
-                <p><b>Age:</b> {{age}}</p> 
-                <p><b>Blood Type: </b>{{group}} {{rhesus}}</p>
-                             <a href="/edit-profile/{{admin}}/{{username}}" class="btn btn-primary">Edit Profile</a>
-            </div>
+            <br>
+            </form>  
+          </center>
           </div>
           <br>
           
          
         </div>
+    
     
         </body>
         </html>
