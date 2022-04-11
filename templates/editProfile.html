@@ -35,6 +35,25 @@
                 <label for="date"><b>Birthdate:</b></label>
                 <input id="date" type="date" name="date" value = {{birthday}}><br><br>
 
+                <label for="group"><b>Blood Type:</b></label><br>
+
+                <select name = "group" id = "group" >
+                  <option value = {{group}} selected = "selected">{{group}}</option>
+                  <option value = "A">A</option>
+                  <option value = "B">B</option>
+                  <option value = "AB">AB</option>
+                  <option value = "O">O</option>
+                </select>
+                <br><br>
+
+                <select name = "rhesus" id = "rhesus">
+
+                  <option value = {{rhesus}} selected = "selected">{{rhesus}}</option>
+                  <option value = "Positive">Positive</option>
+                  <option value = "Negative">Negative</option>
+                </select>
+                
+              <br><br>
                 <input class="btn btn-primary" type="submit" value="Submit">
               </form>
                  </div>
