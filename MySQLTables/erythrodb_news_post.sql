@@ -39,7 +39,6 @@ CREATE TABLE `news_post` (
 
 LOCK TABLES `news_post` WRITE;
 /*!40000 ALTER TABLE `news_post` DISABLE KEYS */;
-INSERT INTO `news_post` VALUES (1,'Fact 1','This is a blood fact','April 6th 2022'),(2,'Donations!','Come donate blood, everyone is welcome!','March 4th 2022');
 /*!40000 ALTER TABLE `news_post` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
