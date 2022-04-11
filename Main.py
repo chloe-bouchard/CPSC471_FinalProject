@@ -1,9 +1,12 @@
 from flask import Flask, redirect, url_for, render_template, request, jsonify, flash
 from datetime import *
 from App import app
-from Database import mysql
+# from Database import mysql
 from NewsPost import *
 from Login import *
+from Location import *
+from Appointment import *
+from BloodType import *
 import mysql.connector
 HOST = "http://TheErythroSite.pythonanywhere.com"
 import os
@@ -13,7 +16,7 @@ from flask_mail import Mail
 import numpy as np
 
 def make_connection():
-    connection = mysql.connector.connect(host = '127.0.0.1', user = 'root', passwd = 'your password', database = 'erythrodb')
+    connection = mysql.connector.connect(host = '127.0.0.1', user = 'root', passwd = 'M0nkey.G1rlisme', database = 'erythrodb')
     return connection
 
 def create_app():
@@ -30,7 +33,6 @@ def create_app():
 
     sess.init_app(app)
     app.config['SESSION_TYPE'] = 'filesystem'
-    # app.config['SECURITY_PASSWORD_SALT'] = 'un_deux_trois'
 
         # mail settings
     app.config['MAIL_SERVER'] = 'smtp.gmail.com'
@@ -57,9 +59,30 @@ def home():
     username = "unregistered"
     return render_template("main.html", admin = admin, username = username)
 
+@app.route('/confirmation/<admin>/<username>', methods=['GET', 'POST'])
+def confirmation(admin, username):
+    return render_template("confirmation.html", admin = admin, username = username)
+
+@app.route('/message/<admin>/<username>', methods=['GET', 'POST'])
+def message(admin, username):
+    return render_template("sendEmail.html", admin = admin, username = username)
+
+
 @app.route('/administrator/<admin>/<username>', methods=['GET', 'POST'])
 def administrator(admin, username):
-    
+    if request.method == "POST":
+        time = request.form.get("time")
+        date = request.form.get("date")
+        address = request.form.get("address")
+        postalcode = request.form.get("postalcode")
+        city = request.form.get("city")
+        country = request.form.get("country")
+        newConnection = make_connection()
+        myAppointment = Appointment(time, date, "0", postalcode, newConnection)
+        myAppointment.add_appointment()
+        myLocation = Location(postalcode, city, address, country, newConnection)
+        myLocation.add_location()
+        # myLocation.add_location()
     return render_template("addAppointment.html", admin = admin, username = username)
 
 @app.route('/sign-up', methods=['GET', 'POST'])
@@ -122,7 +145,66 @@ def loggedIn(admin, username):
 
 @app.route('/book-appointment/<admin>/<username>', methods=['GET', 'POST'])
 def bookAppointment(admin, username):
-    return render_template("bookAppointment.html", admin = '0', username = username)
+    newConnection = make_connection()
+    myAppointment = Appointment("temp", "temp", "temp", "temp", newConnection)        
+    dates = np.array(myAppointment.get_dates())
+    times = np.array(myAppointment.get_times())
+    locations = np.array(myAppointment.get_locations())
+    ID = np.array(myAppointment.get_IDS())
+       
+    myLocation = Location("temp", "temp", "temp", "temp", newConnection)
+   
+    trimmedDates = []
+    trimmedTimes = []
+    trimmedLocations = []
+    trimmedAddresses = []
+    trimmedCities = []
+    trimmedCountries = []
+    trimmedIDs = []
+
+    i = 0
+    while(i < len(ID)):
+        temp = str(ID[i])
+        temp = temp[1:len(temp)-1]
+        i = i +1
+        trimmedIDs.append(temp)
+  
+
+    
+    for x in dates:
+        y = str(x)
+        z = y[2:len(y) -2]
+        completeDate = myAppointment.convert_date(z)
+        trimmedDates.append(completeDate)
+      
+        
+    for x in times:
+        y = str(x)
+        z = y[2:len(y) -2]
+        trimmedTimes.append(z)
+
+   
+    for x in locations:
+        y = str(x)
+        z = y[2:len(y) -2]
+        trimmedLocations.append(z)
+        address = myLocation.get_addresses(z)
+        trimmedAddresses.append(address)
+
+        city = myLocation.get_cities(z)
+        trimmedCities.append(city)
+
+        country = myLocation.get_countries(z)
+        trimmedCountries.append(country)
+
+
+    if request.method == "POST":
+        identification = request.form['submit_button']
+        myAppointment.set_donor(username, identification)
+        return render_template("confirmation.html", identification = int(identification), admin = admin, username = username )
+
+
+    return render_template("bookAppointment.html", admin = '0', username = username, trimmedTimes= trimmedTimes, trimmedDates= trimmedDates, trimmedLocations= trimmedLocations, trimmedAddresses = trimmedAddresses, trimmedCountries = trimmedCountries, trimmedCities = trimmedCities,size = i, ID = trimmedIDs)
 
 @app.route('/blog/<admin>/<username>', methods=['GET', 'POST'])
 def showBlog(admin, username):
@@ -131,8 +213,6 @@ def showBlog(admin, username):
     body = "temp"
     a_date = "temp"
     myNewsPost = NewsPost(title, body, a_date, newConnection) 
-    result = list(myNewsPost.get_posts())
-
     titles = np.array(myNewsPost.get_titles())
     dates = np.array(myNewsPost.get_dates())
     bodies = np.array(myNewsPost.get_bodies())
@@ -181,10 +261,18 @@ def profile(admin, username):
     lastname = myLogin.get_last_name(username)
     gender = myLogin.get_gender(username)
     age = myLogin.get_age(username)
-    
+    bloodType = myLogin.get_bloodType(username)
+
+    myBlood = BloodType("temp", "temp", bloodType, make_connection())
+    if(bloodType != 0):
+        bloodGroup = myBlood.get_group()
+        rhesus = myBlood.get_rh()
+    else:
+        bloodGroup = "-"
+        rhesus = "-"
     myLogin.update_age(birthday)
     age = myLogin.get_age(username)
-    return render_template("Account.html", admin = admin, username = username, name = name, lastname = lastname, birthday = birthday, gender = gender, age = age)
+    return render_template("Account.html", admin = admin, username = username, name = name, lastname = lastname, birthday = birthday, gender = gender, age = age, bloodType = bloodType, group = bloodGroup, rhesus = rhesus)
 
 @app.route('/edit-profile/<admin>/<username>', methods=['GET', 'POST'])
 def editProfile(admin, username):
@@ -194,20 +282,31 @@ def editProfile(admin, username):
     lastname = myLogin.get_last_name(username)
     gender = myLogin.get_gender(username)
     password = myLogin.get_password(username)
-
+    
+    bloodType = myLogin.get_bloodType(username)
+    myBlood = BloodType("group", "rhesus", bloodType, make_connection())
+    group = myBlood.get_group()
+    rhesus = myBlood.get_rh()
     if request.method == "POST":
         myLogin = Login(username, "temp",  make_connection() )
         firstname = request.form.get("fname")
         lastname = request.form.get("lname")
         password = request.form.get("password")
         birthday = request.form.get("date")
+
+        group = request.form.get("group")
+        
+        rhesus = request.form.get("rhesus")
+        myBlood = BloodType(group, rhesus, 0, make_connection())
+        identification = myBlood.get_ID()
+        myLogin.set_bloodType(identification)
         myLogin.set_password(password)
         myLogin.set_name(firstname)
         myLogin.set_lastname(lastname)
         myLogin.set_birthday(birthday)
         age = myLogin.get_age(birthday)
-        return redirect(url_for('profile', username = myLogin.username, admin = admin, age = age)) 
-    return render_template("editProfile.html", admin = admin, username = username, name = name, lastname = lastname, birthday = birthday, gender = gender, password = password)
+        return redirect(url_for('profile', username = myLogin.username, admin = admin, age = age ,bloodType = identification, group = group, rhesus = rhesus)) 
+    return render_template("editProfile.html", admin = admin, username = username, name = name, lastname = lastname, birthday = birthday, gender = gender, password = password, group = group, rhesus = rhesus)
 
 # --------------------------------------------------------------------------------------------------------------------- #
 

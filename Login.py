@@ -10,7 +10,6 @@ class Login:
         self.username = username
         self.password = password
         self.connection = connection
-        print(self.username)
 
 
     #function to execute an SQL Query
@@ -49,16 +48,9 @@ class Login:
         result = self.executeQuery(userQuery)
         convert = str(result)
         convert = convert[2:len(convert) - 3]
-        print(convert)
         return convert
 
-    #For debugging. Prints all users in the user Table
-    def printUsers(self):
-        userQuery = "SELECT Email, Password FROM Account;"
-        table_result = self.executeQuery(userQuery)
-        for x in table_result:
-            print(x)
-
+  
 
     #check if user is already in the database table
     def user_exist(self):
@@ -74,20 +66,18 @@ class Login:
     #Returns false if request was not possible (usename already exists)
     def add_login(self, name, lastname, age, birthday, gender, accountType):
         if(self.user_exist() == False):
-            userQuery = "INSERT INTO Account (First_Name, Last_Name, BirthDate, Gender, Password, Age, Email_Address, admin) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
+            userQuery = "INSERT INTO Account (First_Name, Last_Name, BirthDate, Gender, Password, Age, Email_Address, admin, Blood_Type) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
             if(accountType == "Administrator"):
                 accountType = True
             else:
                 accountType = False
             age = self.how_old(birthday)
-            val = (name, lastname, birthday, gender, self.password, age, self.username, accountType)
+            val = (name, lastname, birthday, gender, self.password, age, self.username, accountType, 0)
             cursor = self.connection.cursor()
             cursor.execute(userQuery, val)
-            print("added new user") #for debugging
             self.connection.commit()
             return True
         else:
-            print("this username already exists") #for debugging
             return False
 
  
@@ -127,6 +117,13 @@ class Login:
         cursor.execute(userQuery, val)
         self.connection.commit()
 
+    def set_bloodType(self,blood_type):
+        cursor = self.connection.cursor()
+        userQuery = "UPDATE Account SET Blood_Type = %s WHERE Email_Address = %s"
+        val = (blood_type, self.username)
+        cursor.execute(userQuery, val)
+        self.connection.commit()
+
     def get_name(self, username):
         userQuery = "SELECT First_Name FROM account WHERE Email_Address = '" + self.username + "';"
         result = self.executeQuery(userQuery)
@@ -162,6 +159,13 @@ class Login:
         convert = convert[3:len(convert) - 4]
         return convert
 
+    def get_bloodType(self, username):   
+        userQuery = "SELECT Blood_Type FROM account WHERE Email_Address = '" + self.username + "';"
+        result = self.executeQuery(userQuery)
+        convert = str(result)
+        convert = convert[2:len(convert) - 3]
+        return int(convert)
+
     def get_age(self, username):   
         userQuery = "SELECT Age FROM account WHERE Email_Address = '" + self.username + "';"
         result = self.executeQuery(userQuery)
@@ -178,9 +182,6 @@ class Login:
         year = int(birthday[0:4])
         month = int(birthday[5:7])
         day = int(birthday[8:10]) 
-        print(year)
-        print(month)
-        print(day)
         return date(year, month, day)
 
     def update_age(self, birthday):
