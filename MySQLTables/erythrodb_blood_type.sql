@@ -38,7 +38,7 @@ CREATE TABLE `blood_type` (
 
 LOCK TABLES `blood_type` WRITE;
 /*!40000 ALTER TABLE `blood_type` DISABLE KEYS */;
-INSERT INTO `blood_type` VALUES (1,'B','Positive'),(2,'O','Negative'),(3,'A','Negative'),(4,'A','Positive'),(5,'O','Negative');
+INSERT INTO `blood_type` VALUES (1,'A','Positive'),(2,'A','Negative'),(3,'B','Negative'),(4,'B','Positive'),(5,'O','Positive'),(6,'O','Negative'), (7,'AB','Negative'),(8,'AB','Positive');
 /*!40000 ALTER TABLE `blood_type` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

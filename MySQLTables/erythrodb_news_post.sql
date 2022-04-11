@@ -25,9 +25,9 @@ DROP TABLE IF EXISTS `news_post`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `news_post` (
-  `idnews_post` int NOT NULL AUTO_INCREMENT,
+  `idnews_post` int NOT NULL auto_increment,
   `title` varchar(225) NOT NULL,
-  `body` LONGTEXT NOT NULL,
+  `body` longtext NOT NULL,
   `date` varchar(225) NOT NULL,
   PRIMARY KEY (`idnews_post`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -39,6 +39,7 @@ CREATE TABLE `news_post` (
 
 LOCK TABLES `news_post` WRITE;
 /*!40000 ALTER TABLE `news_post` DISABLE KEYS */;
+INSERT INTO `news_post` VALUES (1,'Fact 1','This is a blood fact','April 6th 2022'),(2,'Donations!','Come donate blood, everyone is welcome!','March 4th 2022');
 /*!40000 ALTER TABLE `news_post` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

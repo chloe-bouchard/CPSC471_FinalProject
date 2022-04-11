@@ -33,6 +33,8 @@ CREATE TABLE `account` (
   `Age` int NOT NULL,
   `Email_Address` varchar(225) NOT NULL,
   `admin` boolean DEFAULT NULL,
+  `Blood_Type` int NOT NULL,
+  
   PRIMARY KEY (`Email_Address`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='Test';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -43,7 +45,7 @@ CREATE TABLE `account` (
 
 LOCK TABLES `account` WRITE;
 /*!40000 ALTER TABLE `account` DISABLE KEYS */;
-INSERT INTO `account` VALUES (1,'Aashik','Ilangovan','April 10 2001','Male','Password',20,'aashik@gmail.com'),(2,'John','Cena','June 25th 1988','Male','JohnCena',45,'johncena@yahoo.com');
+
 /*!40000 ALTER TABLE `account` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

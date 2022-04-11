@@ -28,6 +28,8 @@ CREATE TABLE `location` (
   `postalcode` varchar(225) NOT NULL,
   `address` varchar(225) NOT NULL,
   `city` varchar(225) NOT NULL,
+  `country` varchar(225) NOT NULL,
+  
   PRIMARY KEY (`postalcode`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
