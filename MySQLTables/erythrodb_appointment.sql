@@ -25,9 +25,12 @@ DROP TABLE IF EXISTS `appointment`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `appointment` (
-  `idappointment` int NOT NULL,
+  `idappointment` int NOT NULL auto_increment,
   `date` varchar(225) NOT NULL,
   `time` varchar(225) NOT NULL,
+  `location` varchar(225) NOT NULL,
+  `donor` varchar(225) NOT NULL,
+  
   PRIMARY KEY (`idappointment`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
