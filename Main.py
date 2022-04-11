@@ -16,7 +16,7 @@ from flask_mail import Mail
 import numpy as np
 
 def make_connection():
-    connection = mysql.connector.connect(host = '127.0.0.1', user = 'root', passwd = 'M0nkey.G1rlisme', database = 'erythrodb')
+    connection = mysql.connector.connect(host = '127.0.0.1', user = 'root', passwd = 'yourpass', database = 'erythrodb')
     return connection
 
 def create_app():
