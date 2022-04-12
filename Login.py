@@ -145,6 +145,14 @@ class Login:
         convert = convert[3:len(convert) - 4]
         return convert
 
+    def get_birthday_words(self, username):
+        userQuery = "SELECT BirthDate FROM account WHERE Email_Address = '" + self.username + "';"
+        result = self.executeQuery(userQuery)
+        convert = str(result)
+        convert = convert[3:len(convert) - 4]
+        convert = self.convert_date(convert)
+        return convert
+
     def get_gender(self, username):   
         userQuery = "SELECT Gender FROM account WHERE Email_Address = '" + self.username + "';"
         result = self.executeQuery(userQuery)
@@ -187,3 +195,9 @@ class Login:
     def update_age(self, birthday):
         age = self.how_old(birthday)
         self.set_age(age)
+
+    def convert_date(self, date):
+        real_date = self.extractDate(date)
+        return real_date.strftime("%B %d %Y")
+
+   
