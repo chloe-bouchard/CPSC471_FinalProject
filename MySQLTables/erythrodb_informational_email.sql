@@ -25,12 +25,11 @@ DROP TABLE IF EXISTS `informational_email`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `informational_email` (
-  `idinformational_email` int NOT NULL,
+  `idinformational_email` int NOT NULL auto_increment,
   `sender` varchar(45) NOT NULL,
   `recipient` varchar(45) NOT NULL,
   `subject` varchar(45) NOT NULL,
   `message` varchar(450) NOT NULL,
-  `topic` varchar(45) NOT NULL,
   PRIMARY KEY (`idinformational_email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -41,7 +40,7 @@ CREATE TABLE `informational_email` (
 
 LOCK TABLES `informational_email` WRITE;
 /*!40000 ALTER TABLE `informational_email` DISABLE KEYS */;
-INSERT INTO `informational_email` VALUES (1,'Erythro','Aashik','DonationFact','Here\'s your message of the day! Blood donation is awesome!','Info'),(2,'Erythro','Gibran','Location Update','Here\'s an update on our new location','Update');
+
 /*!40000 ALTER TABLE `informational_email` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
