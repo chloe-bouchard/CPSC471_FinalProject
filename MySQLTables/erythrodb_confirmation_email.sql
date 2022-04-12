@@ -25,13 +25,11 @@ DROP TABLE IF EXISTS `confirmation_email`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `confirmation_email` (
-  `emailID` int NOT NULL,
+  `emailID` int NOT NULL auto_increment,
   `sender` varchar(45) NOT NULL,
   `recipient` varchar(45) NOT NULL,
   `subject` varchar(45) NOT NULL,
-  `message` varchar(450) NOT NULL,
-  `Donor` varchar(45) NOT NULL,
-  `AppointmentDate` varchar(400) NOT NULL,
+  `message` longtext NOT NULL,
   PRIMARY KEY (`emailID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
