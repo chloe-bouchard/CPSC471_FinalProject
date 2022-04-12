@@ -7,12 +7,13 @@ from Login import *
 from Location import *
 from Appointment import *
 from BloodType import *
+from Email import *
 import mysql.connector
 HOST = "http://TheErythroSite.pythonanywhere.com"
 import os
 from flask import Flask
 from os import path
-from flask_mail import Mail
+# from flask_mail import Mail
 import numpy as np
 
 def make_connection():
@@ -67,6 +68,30 @@ def confirmation(admin, username):
 def message(admin, username):
     return render_template("sendEmail.html", admin = admin, username = username)
 
+@app.route('/my-messages/<admin>/<username>', methods=['GET', 'POST'])
+def myMessages(admin, username):
+    myMessage = Email("sender", username, "subject", "message", "1", make_connection())
+    
+    subjects = np.array(myMessage.get_confirmational_Subjects())
+    messages = np.array(myMessage.get_confirmational_Messages())
+
+    trimmedSubjects = []
+    trimmedMessages = []
+    size = 0
+    for x in subjects:
+        y = str(x)
+        z = y[2:len(y) -2]
+        trimmedSubjects.append(z)
+        size = size + 1
+
+    for x in messages:
+        y = str(x)
+        z = y[2:len(y) -2]
+        trimmedMessages.append(z)
+      
+    return render_template("myMessages.html", admin = admin, username = username, messages =trimmedMessages, subjects = trimmedSubjects, size = size)
+
+
 
 @app.route('/administrator/<admin>/<username>', methods=['GET', 'POST'])
 def administrator(admin, username):
@@ -82,7 +107,6 @@ def administrator(admin, username):
         myAppointment.add_appointment()
         myLocation = Location(postalcode, city, address, country, newConnection)
         myLocation.add_location()
-        # myLocation.add_location()
     return render_template("addAppointment.html", admin = admin, username = username)
 
 @app.route('/sign-up', methods=['GET', 'POST'])
@@ -201,6 +225,15 @@ def bookAppointment(admin, username):
     if request.method == "POST":
         identification = request.form['submit_button']
         myAppointment.set_donor(username, identification)
+        sender = "Erythro Site"
+        Donor = username
+        Subject = "You booked an appointment"
+        time = str(myAppointment.get_time(identification))
+        date = str(myAppointment.get_date(identification))
+        location = str(myAppointment.get_location(identification))
+        body = "Your appointment is booked for " + date + " at " + time
+        myEmail = Email(sender, Donor, Subject, body, 1, make_connection())
+        myEmail.add_email()
         return render_template("confirmation.html", identification = int(identification), admin = admin, username = username )
 
 
@@ -272,7 +305,7 @@ def profile(admin, username):
         rhesus = "-"
     myLogin.update_age(birthday)
     age = myLogin.get_age(username)
-    return render_template("Account.html", admin = admin, username = username, name = name, lastname = lastname, birthday = birthday, gender = gender, age = age, bloodType = bloodType, group = bloodGroup, rhesus = rhesus)
+    return render_template("Account.html", admin = admin, username = username, name = name, lastname = lastname, birthday = myLogin.get_birthday_words(username), gender = gender, age = age, bloodType = bloodType, group = bloodGroup, rhesus = rhesus)
 
 @app.route('/edit-profile/<admin>/<username>', methods=['GET', 'POST'])
 def editProfile(admin, username):
@@ -307,6 +340,7 @@ def editProfile(admin, username):
         age = myLogin.get_age(birthday)
         return redirect(url_for('profile', username = myLogin.username, admin = admin, age = age ,bloodType = identification, group = group, rhesus = rhesus)) 
     return render_template("editProfile.html", admin = admin, username = username, name = name, lastname = lastname, birthday = birthday, gender = gender, password = password, group = group, rhesus = rhesus)
+
 
 # --------------------------------------------------------------------------------------------------------------------- #
 

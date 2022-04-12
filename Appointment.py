@@ -79,3 +79,45 @@ class Appointment:
         val = (username, id)
         cursor.execute(userQuery, val)
         self.connection.commit()
+
+    def get_date(self, id):
+        userQuery="SELECT date FROM appointment WHERE idappointment = %s;"
+        val = ((id,))
+        cursor = self.connection.cursor()
+        cursor.execute(userQuery, val)
+        result = cursor.fetchall()
+        convert = str(result)
+        convert = convert[3:len(convert )-4]
+        convert = self.convert_date(convert)
+        return convert
+
+    def get_time(self, id):
+        userQuery="SELECT time FROM appointment WHERE idappointment = %s;"
+        val = ((id,))
+        cursor = self.connection.cursor()
+        cursor.execute(userQuery, val)
+        result = cursor.fetchall()
+        convert = str(result)
+        
+        convert = convert[3:len(convert )-4]
+        return convert
+    
+    def get_location(self, id):
+        userQuery="SELECT location FROM appointment WHERE idappointment = %s;"
+        val = ((id,))
+        cursor = self.connection.cursor()
+        cursor.execute(userQuery, val)
+        result = cursor.fetchall()
+        convert = str(result)
+        convert = convert[3:len(convert )-4]
+        return convert
+
+    def convert_date(self, date):
+        real_date = self.extractDate(date)
+        return real_date.strftime("%B %d %Y")
+
+    def extractDate(self, time):
+        year = int(time[0:4])
+        month = int(time[5:7])
+        day = int(time[8:10]) 
+        return datetime(year, month, day)
